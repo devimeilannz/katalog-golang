@@ -1,0 +1,844 @@
+{
+  "info": {
+    "name": "Katalog Produk API",
+    "description": "Jalankan dari atas ke bawah. Pastikan server berjalan: go run ./cmd/api",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Kategori",
+      "item": [
+        {
+          "name": "Buat Kategori",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/categories",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "categories"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Elektronik\",\n  \"description\": \"Perangkat elektronik dan aksesori\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Membuat kategori. Menyimpan id hasilnya ke variabel {{category_id}} untuk request berikutnya."
+          },
+          "response": [
+            {
+              "name": "201 - Kategori berhasil dibuat",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/categories",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "categories"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Elektronik\",\n  \"description\": \"Perangkat elektronik dan aksesori\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Kategori berhasil dibuat\",\n  \"data\": {\n    \"id\": \"3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c\",\n    \"name\": \"Elektronik\",\n    \"description\": \"Perangkat elektronik dan aksesori\",\n    \"created_at\": \"2026-11-17T06:30:00Z\",\n    \"updated_at\": \"2026-11-17T06:30:00Z\"\n  }\n}"
+            },
+            {
+              "name": "400 - Validasi gagal (semua error dikembalikan sekaligus)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/categories",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "categories"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"a\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Validasi gagal\",\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"details\": [\n      {\n        \"field\": \"name\",\n        \"message\": \"name harus 3-100 karakter (saat ini 1)\"\n      }\n    ]\n  }\n}"
+            },
+            {
+              "name": "400 - Validasi gagal / JSON rusak",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/categories",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "categories"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{ \"name\": ",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Validasi gagal\",\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"details\": [\n      {\n        \"field\": \"body\",\n        \"message\": \"body bukan JSON yang valid\"\n      }\n    ]\n  }\n}"
+            },
+            {
+              "name": "409 - Nama kategori sudah digunakan",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/categories",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "categories"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Elektronik\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Nama kategori sudah digunakan\",\n  \"error\": {\n    \"code\": \"CONFLICT\"\n  }\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", function () { pm.response.to.have.status(201); });",
+                  "const json = pm.response.json();",
+                  "pm.test(\"Envelope success = true\", function () { pm.expect(json.success).to.eql(true); });",
+                  "pm.collectionVariables.set(\"category_id\", json.data.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Daftar Kategori",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/categories?page=1&limit=10&search=",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "categories"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "search",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Query parameter: page (default 1), limit (default 10, maksimal 100), search (nama kategori). Kosongkan search untuk menampilkan semua."
+          },
+          "response": [
+            {
+              "name": "200 - Daftar kategori berhasil diambil",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/categories?page=1&limit=10",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "categories"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Daftar kategori berhasil diambil\",\n  \"data\": [\n    {\n      \"id\": \"3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c\",\n      \"name\": \"Elektronik\",\n      \"description\": \"Perangkat elektronik dan aksesori\",\n      \"created_at\": \"2026-11-17T06:30:00Z\",\n      \"updated_at\": \"2026-11-17T06:30:00Z\"\n    }\n  ],\n  \"meta\": {\n    \"page\": 1,\n    \"limit\": 10,\n    \"total_items\": 1,\n    \"total_pages\": 1\n  }\n}"
+            },
+            {
+              "name": "400 - Query parameter tidak valid (limit=500)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/categories?limit=500",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "categories"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "500"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Validasi gagal\",\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"details\": [\n      {\n        \"field\": \"limit\",\n        \"message\": \"limit harus berupa bilangan bulat 1-100\"\n      }\n    ]\n  }\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", function () { pm.response.to.have.status(200); });",
+                  "const json = pm.response.json();",
+                  "pm.test(\"Envelope success = true\", function () { pm.expect(json.success).to.eql(true); });",
+                  "pm.test(\"Ada meta pagination\", function () { pm.expect(json.meta).to.have.keys(\"page\",\"limit\",\"total_items\",\"total_pages\"); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Detail Kategori",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/categories/{{category_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "categories",
+                "{{category_id}}"
+              ]
+            },
+            "description": "Detail kategori beserta jumlah produk aktif."
+          },
+          "response": [
+            {
+              "name": "200 - Detail kategori berhasil diambil",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/categories/3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "categories",
+                    "3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Detail kategori berhasil diambil\",\n  \"data\": {\n    \"id\": \"3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c\",\n    \"name\": \"Elektronik\",\n    \"description\": \"Perangkat elektronik dan aksesori\",\n    \"product_count\": 0,\n    \"created_at\": \"2026-11-17T06:30:00Z\",\n    \"updated_at\": \"2026-11-17T06:30:00Z\"\n  }\n}"
+            },
+            {
+              "name": "400 - Validasi gagal / ID bukan UUID",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/categories/abc",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "categories",
+                    "abc"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Validasi gagal\",\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"details\": [\n      {\n        \"field\": \"id\",\n        \"message\": \"id harus berupa UUID\"\n      }\n    ]\n  }\n}"
+            },
+            {
+              "name": "404 - Kategori tidak ditemukan / sudah dihapus",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/categories/3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "categories",
+                    "3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Kategori tidak ditemukan\",\n  \"error\": {\n    \"code\": \"NOT_FOUND\"\n  }\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", function () { pm.response.to.have.status(200); });",
+                  "const json = pm.response.json();",
+                  "pm.test(\"Envelope success = true\", function () { pm.expect(json.success).to.eql(true); });",
+                  "pm.test(\"Ada product_count\", function () { pm.expect(json.data).to.have.property(\"product_count\"); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ubah Kategori",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/categories/{{category_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "categories",
+                "{{category_id}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Elektronik Rumah\",\n  \"description\": \"Peralatan elektronik rumah tangga\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Penggantian penuh: name dan description wajib dikirim."
+          },
+          "response": [
+            {
+              "name": "200 - Kategori berhasil diperbarui",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/categories/3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "categories",
+                    "3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Elektronik Rumah\",\n  \"description\": \"Peralatan elektronik rumah tangga\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Kategori berhasil diperbarui\",\n  \"data\": {\n    \"id\": \"3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c\",\n    \"name\": \"Elektronik Rumah\",\n    \"description\": \"Peralatan elektronik rumah tangga\",\n    \"created_at\": \"2026-11-17T06:30:00Z\",\n    \"updated_at\": \"2026-11-17T07:15:00Z\"\n  }\n}"
+            },
+            {
+              "name": "400 - Validasi gagal / description tidak dikirim",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/categories/3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "categories",
+                    "3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Elektronik Rumah\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Validasi gagal\",\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"details\": [\n      {\n        \"field\": \"description\",\n        \"message\": \"description wajib dikirim pada PUT\"\n      }\n    ]\n  }\n}"
+            },
+            {
+              "name": "404 - Kategori tidak ditemukan",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/categories/3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "categories",
+                    "3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Elektronik Rumah\",\n  \"description\": \"Peralatan elektronik rumah tangga\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Kategori tidak ditemukan\",\n  \"error\": {\n    \"code\": \"NOT_FOUND\"\n  }\n}"
+            },
+            {
+              "name": "409 - Nama kategori sudah digunakan",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/categories/3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "categories",
+                    "3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Elektronik Rumah\",\n  \"description\": \"Peralatan elektronik rumah tangga\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Nama kategori sudah digunakan\",\n  \"error\": {\n    \"code\": \"CONFLICT\"\n  }\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", function () { pm.response.to.have.status(200); });",
+                  "const json = pm.response.json();",
+                  "pm.test(\"Envelope success = true\", function () { pm.expect(json.success).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Hapus Kategori",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/categories/{{category_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "categories",
+                "{{category_id}}"
+              ]
+            },
+            "description": "Soft delete. Kategori yang masih punya produk aktif ditolak dengan 409."
+          },
+          "response": [
+            {
+              "name": "200 - Kategori berhasil dihapus",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/categories/3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "categories",
+                    "3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Kategori berhasil dihapus\",\n  \"data\": {\n    \"id\": \"3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c\"\n  }\n}"
+            },
+            {
+              "name": "404 - Kategori tidak ditemukan / sudah dihapus",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/categories/3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "categories",
+                    "3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Kategori tidak ditemukan\",\n  \"error\": {\n    \"code\": \"NOT_FOUND\"\n  }\n}"
+            },
+            {
+              "name": "409 - Kategori masih digunakan produk aktif",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/categories/3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "categories",
+                    "3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c"
+                  ]
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Kategori masih digunakan oleh 12 produk aktif\",\n  \"error\": {\n    \"code\": \"CONFLICT\"\n  }\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", function () { pm.response.to.have.status(200); });",
+                  "const json = pm.response.json();",
+                  "pm.test(\"Envelope success = true\", function () { pm.expect(json.success).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "category_id",
+      "value": ""
+    }
+  ]
+}
