@@ -1,0 +1,2687 @@
+{
+  "info": {
+    "name": "Katalog Produk API ",
+    "description": "Jalankan dari atas ke bawah (atau Run collection). Server: go run ./cmd/api. Folder Produk membuat kategori sendiri lewat pre-request script, jadi bisa dijalankan berulang kali.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "description": "Berada di luar prefix /api/v1.",
+            "url": {
+              "raw": "{{base_url}}/health",
+              "protocol": "",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "health"
+              ],
+              "query": [],
+              "variable": []
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  "pm.test(\"Status 200\", function () { pm.expect(pm.response.code).to.equal(200); });",
+                  "const json = pm.response.json();",
+                  "pm.test(\"Envelope success = true\", function () { pm.expect(json.success).to.eql(true); });"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "200 - Service sehat",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/health",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "health"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Service sehat\",\n  \"data\": {\n    \"status\": \"up\",\n    \"database\": \"up\"\n  }\n}",
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "503 - Database tidak dapat dihubungi",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/health",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "health"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Database tidak dapat dihubungi\",\n  \"error\": {\n    \"code\": \"SERVICE_UNAVAILABLE\"\n  }\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Kategori",
+      "item": [
+        {
+          "name": "Buat Kategori",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "description": "",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "description": "Menyimpan id hasilnya ke variabel {{category_id}}.",
+            "url": {
+              "raw": "{{base_url}}/api/v1/categories",
+              "protocol": "",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "categories"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"skincare\",\n  \"description\": \"Perawatan kulit wajah\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  "pm.test(\"Status 201\", function () { pm.expect(pm.response.code).to.equal(201); });",
+                  "const json = pm.response.json();",
+                  "pm.test(\"Envelope success = true\", function () { pm.expect(json.success).to.eql(true); });",
+                  "pm.collectionVariables.set(\"category_id\", json.data.id);"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "201 - Kategori berhasil dibuat",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": "",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/categories",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "categories"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Elektronik\",\n  \"description\": \"Perangkat elektronik dan aksesori\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Kategori berhasil dibuat\",\n  \"data\": {\n    \"id\": \"3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c\",\n    \"name\": \"Elektronik\",\n    \"description\": \"Perangkat elektronik dan aksesori\",\n    \"created_at\": \"2026-11-17T06:30:00Z\",\n    \"updated_at\": \"2026-11-17T06:30:00Z\"\n  }\n}",
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "400 - Input tidak valid",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": "",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/categories",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "categories"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"a\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Input tidak valid\",\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"details\": [\n      {\n        \"field\": \"name\",\n        \"message\": \"harus 3-100 karakter\"\n      }\n    ]\n  }\n}",
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "400 - Input tidak valid / JSON rusak",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": "",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/categories",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "categories"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{ \"name\": ",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Input tidak valid\",\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"details\": [\n      {\n        \"field\": \"body\",\n        \"message\": \"body bukan JSON yang valid\"\n      }\n    ]\n  }\n}",
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "409 - Nama kategori sudah digunakan",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": "",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/categories",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "categories"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Elektronik\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Nama kategori sudah digunakan\",\n  \"error\": {\n    \"code\": \"CONFLICT\"\n  }\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "name": "Daftar Kategori",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "description": "search bersifat opsional (aktifkan dengan mencentang).",
+            "url": {
+              "raw": "{{base_url}}/api/v1/categories?page=1&limit=10",
+              "protocol": "",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "categories?page=1&limit=10"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "search",
+                  "value": ""
+                }
+              ],
+              "variable": []
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  "pm.test(\"Status 200\", function () { pm.expect(pm.response.code).to.equal(200); });",
+                  "const json = pm.response.json();",
+                  "pm.test(\"Envelope success = true\", function () { pm.expect(json.success).to.eql(true); });",
+                  "pm.test(\"Ada meta\", function () { pm.expect(json.meta).to.have.keys(\"page\",\"limit\",\"total_items\",\"total_pages\"); });"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "200 - Daftar kategori berhasil diambil",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/categories?page=1&limit=10",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "categories?page=1&limit=10"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": []
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Daftar kategori berhasil diambil\",\n  \"data\": [\n    {\n      \"id\": \"3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c\",\n      \"name\": \"Elektronik\",\n      \"description\": \"Perangkat elektronik dan aksesori\",\n      \"created_at\": \"2026-11-17T06:30:00Z\",\n      \"updated_at\": \"2026-11-17T06:30:00Z\"\n    }\n  ],\n  \"meta\": {\n    \"page\": 1,\n    \"limit\": 10,\n    \"total_items\": 1,\n    \"total_pages\": 1\n  }\n}",
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "400 - Input tidak valid (limit=500)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/categories?limit=500",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "categories?limit=500"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "500"
+                    }
+                  ],
+                  "variable": []
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Input tidak valid\",\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"details\": [\n      {\n        \"field\": \"limit\",\n        \"message\": \"harus berupa bilangan bulat 1-100\"\n      }\n    ]\n  }\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "name": "Detail Kategori",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "description": "",
+            "url": {
+              "raw": "{{base_url}}/api/v1/categories/{{category_id}}",
+              "protocol": "",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "categories",
+                "{{category_id}}"
+              ],
+              "query": [],
+              "variable": []
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  "pm.test(\"Status 200\", function () { pm.expect(pm.response.code).to.equal(200); });",
+                  "const json = pm.response.json();",
+                  "pm.test(\"Envelope success = true\", function () { pm.expect(json.success).to.eql(true); });",
+                  "pm.test(\"Ada product_count\", function () { pm.expect(json.data).to.have.property(\"product_count\"); });"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "200 - Detail kategori berhasil diambil",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/categories/3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "categories",
+                    "3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Detail kategori berhasil diambil\",\n  \"data\": {\n    \"id\": \"3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c\",\n    \"name\": \"Elektronik\",\n    \"description\": \"Perangkat elektronik dan aksesori\",\n    \"product_count\": 12,\n    \"created_at\": \"2026-11-17T06:30:00Z\",\n    \"updated_at\": \"2026-11-17T06:30:00Z\"\n  }\n}",
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "400 - Input tidak valid / ID bukan UUID",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/categories/abc",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "categories",
+                    "abc"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Input tidak valid\",\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"details\": [\n      {\n        \"field\": \"id\",\n        \"message\": \"harus berupa UUID\"\n      }\n    ]\n  }\n}",
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "404 - Kategori tidak ditemukan",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/categories/3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "categories",
+                    "3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Kategori tidak ditemukan\",\n  \"error\": {\n    \"code\": \"NOT_FOUND\"\n  }\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "name": "Ubah Kategori",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "description": "",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "description": "Penggantian penuh: name dan description wajib dikirim.",
+            "url": {
+              "raw": "{{base_url}}/api/v1/categories/{{category_id}}",
+              "protocol": "",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "categories",
+                "{{category_id}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Elektronik Rumah\",\n  \"description\": \"Peralatan elektronik rumah tangga\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  "pm.test(\"Status 200\", function () { pm.expect(pm.response.code).to.equal(200); });",
+                  "const json = pm.response.json();",
+                  "pm.test(\"Envelope success = true\", function () { pm.expect(json.success).to.eql(true); });"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "200 - Kategori berhasil diperbarui",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": "",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/categories/3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "categories",
+                    "3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Elektronik Rumah\",\n  \"description\": \"Peralatan elektronik rumah tangga\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Kategori berhasil diperbarui\",\n  \"data\": {\n    \"id\": \"3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c\",\n    \"name\": \"Elektronik Rumah\",\n    \"description\": \"Peralatan elektronik rumah tangga\",\n    \"created_at\": \"2026-11-17T06:30:00Z\",\n    \"updated_at\": \"2026-11-17T06:35:00Z\"\n  }\n}",
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "400 - Input tidak valid / description tidak dikirim",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": "",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/categories/3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "categories",
+                    "3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Elektronik Rumah\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Input tidak valid\",\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"details\": [\n      {\n        \"field\": \"description\",\n        \"message\": \"wajib dikirim\"\n      }\n    ]\n  }\n}",
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "404 - Kategori tidak ditemukan",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": "",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/categories/3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "categories",
+                    "3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Elektronik Rumah\",\n  \"description\": \"Peralatan elektronik rumah tangga\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Kategori tidak ditemukan\",\n  \"error\": {\n    \"code\": \"NOT_FOUND\"\n  }\n}",
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "409 - Nama kategori sudah digunakan",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": "",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/categories/3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "categories",
+                    "3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Elektronik Rumah\",\n  \"description\": \"Peralatan elektronik rumah tangga\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Nama kategori sudah digunakan\",\n  \"error\": {\n    \"code\": \"CONFLICT\"\n  }\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "name": "Hapus Kategori",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "description": "",
+            "url": {
+              "raw": "{{base_url}}/api/v1/categories/{{category_id}}",
+              "protocol": "",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "categories",
+                "{{category_id}}"
+              ],
+              "query": [],
+              "variable": []
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  "pm.test(\"Status 200\", function () { pm.expect(pm.response.code).to.equal(200); });",
+                  "const json = pm.response.json();",
+                  "pm.test(\"Envelope success = true\", function () { pm.expect(json.success).to.eql(true); });"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "200 - Kategori berhasil dihapus",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/categories/3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "categories",
+                    "3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Kategori berhasil dihapus\",\n  \"data\": {\n    \"id\": \"3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c\"\n  }\n}",
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "404 - Kategori tidak ditemukan",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/categories/3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "categories",
+                    "3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Kategori tidak ditemukan\",\n  \"error\": {\n    \"code\": \"NOT_FOUND\"\n  }\n}",
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "409 - Kategori masih digunakan produk aktif",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/categories/3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "categories",
+                    "3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Kategori masih digunakan oleh 12 produk aktif\",\n  \"error\": {\n    \"code\": \"CONFLICT\"\n  }\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Produk",
+      "item": [
+        {
+          "name": "Buat Produk",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "description": "",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "description": "Pre-request script membuat kategori baru ({{product_category_id}}) dan {{run_id}} acak. Simpan id produk ke {{product_id}}.",
+            "url": {
+              "raw": "{{base_url}}/api/v1/products",
+              "protocol": "",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "products"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sku\": \"KB-{{run_id}}\",\n  \"name\": \"wardah facial wash\",\n  \"description\": \"Sabun cuci muka yang memberikan kesan brightening\",\n  \"price\": 40000,\n  \"stock\": 10,\n  \"category_id\": \"{{product_category_id}}\",\n  \"is_active\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  "// Membuat kategori baru + run_id acak supaya SKU unik di setiap run.",
+                  "pm.collectionVariables.set(\"run_id\", String(Math.floor(100000 + Math.random() * 900000)));",
+                  "await pm.sendRequest({",
+                  "  url: pm.collectionVariables.get(\"base_url\") + \"/api/v1/categories\",",
+                  "  method: \"POST\",",
+                  "  header: { \"Content-Type\": \"application/json\" },",
+                  "  body: {",
+                  "    mode: \"raw\",",
+                  "    raw: JSON.stringify({ name: \"Kategori Uji \" + Date.now(), description: \"Dibuat otomatis oleh Postman\" })",
+                  "  }",
+                  "}, async function(err, res) {",
+                  "  if (!err && res.code === 201) { pm.collectionVariables.set(\"product_category_id\", res.json().data.id); }",
+                  "});"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  "pm.test(\"Status 201\", function () { pm.expect(pm.response.code).to.equal(201); });",
+                  "const json = pm.response.json();",
+                  "pm.test(\"Envelope success = true\", function () { pm.expect(json.success).to.eql(true); });",
+                  "pm.test(\"price berupa angka\", function () { pm.expect(json.data.price).to.be.a(\"number\"); });",
+                  "pm.test(\"deleted_at tidak tampil\", function () { pm.expect(json.data).to.not.have.property(\"deleted_at\"); });",
+                  "pm.collectionVariables.set(\"product_id\", json.data.id);"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "201 - Produk berhasil dibuat",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": "",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/products",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "products"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sku\": \"KB-001\",\n  \"name\": \"Keyboard Mekanikal\",\n  \"description\": \"Keyboard 87 tombol, switch brown\",\n  \"price\": 450000,\n  \"stock\": 25,\n  \"category_id\": \"3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c\",\n  \"is_active\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Produk berhasil dibuat\",\n  \"data\": {\n    \"id\": \"9a8b7c6d-5e4f-4a3b-8c2d-1e0f9a8b7c6d\",\n    \"sku\": \"KB-001\",\n    \"name\": \"Keyboard Mekanikal\",\n    \"description\": \"Keyboard 87 tombol, switch brown\",\n    \"price\": 450000.00,\n    \"stock\": 25,\n    \"is_active\": true,\n    \"category\": {\n      \"id\": \"3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c\",\n      \"name\": \"Elektronik\"\n    },\n    \"created_at\": \"2026-11-17T06:35:00Z\",\n    \"updated_at\": \"2026-11-17T06:35:00Z\"\n  }\n}",
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "400 - Input tidak valid (beberapa field sekaligus)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": "",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/products",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "products"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sku\": \"kb 001\",\n  \"name\": \"Keyboard Mekanikal\",\n  \"price\": 0,\n  \"stock\": 25,\n  \"category_id\": \"00000000-0000-0000-0000-000000000000\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Input tidak valid\",\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"details\": [\n      {\n        \"field\": \"sku\",\n        \"message\": \"hanya boleh huruf besar, angka, dan tanda hubung\"\n      },\n      {\n        \"field\": \"price\",\n        \"message\": \"harus lebih dari 0\"\n      },\n      {\n        \"field\": \"category_id\",\n        \"message\": \"kategori tidak ditemukan\"\n      }\n    ]\n  }\n}",
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "409 - SKU sudah dipakai",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": "",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/products",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "products"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sku\": \"KB-001\",\n  \"name\": \"Keyboard Mekanikal\",\n  \"description\": \"Keyboard 87 tombol, switch brown\",\n  \"price\": 450000,\n  \"stock\": 25,\n  \"category_id\": \"3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c\",\n  \"is_active\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"SKU sudah dipakai\",\n  \"error\": {\n    \"code\": \"CONFLICT\"\n  }\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "name": "Daftar Produk",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "description": "Query yang tidak dicentang bersifat opsional. sort: name | price | created_at. order: asc | desc.",
+            "url": {
+              "raw": "{{base_url}}/api/v1/products?page=1&limit=10&sort=created_at&order=desc",
+              "protocol": "",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "products?page=1&limit=10&sort=created_at&order=desc"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "search",
+                  "value": "keyboard"
+                },
+                {
+                  "key": "category_id",
+                  "value": "{{product_category_id}}"
+                },
+                {
+                  "key": "min_price",
+                  "value": "40000"
+                },
+                {
+                  "key": "max_price",
+                  "value": "40000"
+                },
+                {
+                  "key": "is_active",
+                  "value": "true"
+                },
+                {
+                  "key": "sort",
+                  "value": "created_at"
+                },
+                {
+                  "key": "order",
+                  "value": "desc"
+                }
+              ],
+              "variable": []
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  "pm.test(\"Status 200\", function () { pm.expect(pm.response.code).to.equal(200); });",
+                  "const json = pm.response.json();",
+                  "pm.test(\"Envelope success = true\", function () { pm.expect(json.success).to.eql(true); });",
+                  "pm.test(\"data berupa array\", function () { pm.expect(json.data).to.be.an(\"array\"); });",
+                  "pm.test(\"Ada meta\", function () { pm.expect(json.meta).to.have.keys(\"page\",\"limit\",\"total_items\",\"total_pages\"); });"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "200 - Daftar produk berhasil diambil",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/products?search=keyboard&min_price=100000&sort=price&order=asc&page=1&limit=10",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "products?search=keyboard&min_price=100000&sort=price&order=asc&page=1&limit=10"
+                  ],
+                  "query": [
+                    {
+                      "key": "search",
+                      "value": "keyboard"
+                    },
+                    {
+                      "key": "min_price",
+                      "value": "100000"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "price"
+                    },
+                    {
+                      "key": "order",
+                      "value": "asc"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": []
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Daftar produk berhasil diambil\",\n  \"data\": [\n    {\n      \"id\": \"9a8b7c6d-5e4f-4a3b-8c2d-1e0f9a8b7c6d\",\n      \"sku\": \"KB-001\",\n      \"name\": \"Keyboard Mekanikal\",\n      \"description\": \"Keyboard 87 tombol, switch brown\",\n      \"price\": 450000.00,\n      \"stock\": 25,\n      \"is_active\": true,\n      \"category\": {\n        \"id\": \"3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c\",\n        \"name\": \"Elektronik\"\n      },\n      \"created_at\": \"2026-11-17T06:35:00Z\",\n      \"updated_at\": \"2026-11-17T06:35:00Z\"\n    }\n  ],\n  \"meta\": {\n    \"page\": 1,\n    \"limit\": 10,\n    \"total_items\": 23,\n    \"total_pages\": 3\n  }\n}",
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "200 - Tidak ada hasil (data berisi [])",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/products?search=tidak-ada",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "products?search=tidak-ada"
+                  ],
+                  "query": [
+                    {
+                      "key": "search",
+                      "value": "tidak-ada"
+                    }
+                  ],
+                  "variable": []
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Daftar produk berhasil diambil\",\n  \"data\": [],\n  \"meta\": {\n    \"page\": 1,\n    \"limit\": 10,\n    \"total_items\": 0,\n    \"total_pages\": 0\n  }\n}",
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "400 - Input tidak valid (sort=password)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/products?sort=password",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "products?sort=password"
+                  ],
+                  "query": [
+                    {
+                      "key": "sort",
+                      "value": "password"
+                    }
+                  ],
+                  "variable": []
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Input tidak valid\",\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"details\": [\n      {\n        \"field\": \"sort\",\n        \"message\": \"harus salah satu dari: name, price, created_at\"\n      }\n    ]\n  }\n}",
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "400 - Input tidak valid (limit=0)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/products?limit=0",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "products?limit=0"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": []
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Input tidak valid\",\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"details\": [\n      {\n        \"field\": \"limit\",\n        \"message\": \"harus berupa bilangan bulat 1-100\"\n      }\n    ]\n  }\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "name": "Detail Produk",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "description": "",
+            "url": {
+              "raw": "{{base_url}}/api/v1/products/{{product_id}}",
+              "protocol": "",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "products",
+                "{{product_id}}"
+              ],
+              "query": [],
+              "variable": []
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  "pm.test(\"Status 200\", function () { pm.expect(pm.response.code).to.equal(200); });",
+                  "const json = pm.response.json();",
+                  "pm.test(\"Envelope success = true\", function () { pm.expect(json.success).to.eql(true); });",
+                  "pm.test(\"Ada nama kategori\", function () { pm.expect(json.data.category).to.have.keys(\"id\",\"name\"); });"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "200 - Detail produk berhasil diambil",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/products/9a8b7c6d-5e4f-4a3b-8c2d-1e0f9a8b7c6d",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "products",
+                    "9a8b7c6d-5e4f-4a3b-8c2d-1e0f9a8b7c6d"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Detail produk berhasil diambil\",\n  \"data\": {\n    \"id\": \"9a8b7c6d-5e4f-4a3b-8c2d-1e0f9a8b7c6d\",\n    \"sku\": \"KB-001\",\n    \"name\": \"Keyboard Mekanikal\",\n    \"description\": \"Keyboard 87 tombol, switch brown\",\n    \"price\": 450000.00,\n    \"stock\": 25,\n    \"is_active\": true,\n    \"category\": {\n      \"id\": \"3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c\",\n      \"name\": \"Elektronik\"\n    },\n    \"created_at\": \"2026-11-17T06:35:00Z\",\n    \"updated_at\": \"2026-11-17T06:35:00Z\"\n  }\n}",
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "400 - Input tidak valid / ID bukan UUID",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/products/abc",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "products",
+                    "abc"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Input tidak valid\",\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"details\": [\n      {\n        \"field\": \"id\",\n        \"message\": \"harus berupa UUID\"\n      }\n    ]\n  }\n}",
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "404 - Produk tidak ditemukan",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/products/9a8b7c6d-5e4f-4a3b-8c2d-1e0f9a8b7c6d",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "products",
+                    "9a8b7c6d-5e4f-4a3b-8c2d-1e0f9a8b7c6d"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Produk tidak ditemukan\",\n  \"error\": {\n    \"code\": \"NOT_FOUND\"\n  }\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "name": "Ubah Produk",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "description": "",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "description": "Penggantian penuh: semua field wajib dikirim, termasuk description dan is_active.",
+            "url": {
+              "raw": "{{base_url}}/api/v1/products/{{product_id}}",
+              "protocol": "",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "products",
+                "{{product_id}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sku\": \"KB-{{run_id}}\",\n  \"name\": \"cosrx\",\n  \"description\": \"\",\n  \"price\": 80000,\n  \"stock\": 30,\n  \"category_id\": \"{{product_category_id}}\",\n  \"is_active\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  "pm.test(\"Status 200\", function () { pm.expect(pm.response.code).to.equal(200); });",
+                  "const json = pm.response.json();",
+                  "pm.test(\"Envelope success = true\", function () { pm.expect(json.success).to.eql(true); });"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "200 - Produk berhasil diperbarui",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": "",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/products/9a8b7c6d-5e4f-4a3b-8c2d-1e0f9a8b7c6d",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "products",
+                    "9a8b7c6d-5e4f-4a3b-8c2d-1e0f9a8b7c6d"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sku\": \"KB-001\",\n  \"name\": \"Keyboard Mekanikal v2\",\n  \"description\": \"Keyboard 87 tombol, switch blue\",\n  \"price\": 475000,\n  \"stock\": 30,\n  \"category_id\": \"3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c\",\n  \"is_active\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Produk berhasil diperbarui\",\n  \"data\": {\n    \"id\": \"9a8b7c6d-5e4f-4a3b-8c2d-1e0f9a8b7c6d\",\n    \"sku\": \"KB-001\",\n    \"name\": \"Keyboard Mekanikal v2\",\n    \"description\": \"Keyboard 87 tombol, switch blue\",\n    \"price\": 475000.00,\n    \"stock\": 30,\n    \"is_active\": true,\n    \"category\": {\n      \"id\": \"3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c\",\n      \"name\": \"Elektronik\"\n    },\n    \"created_at\": \"2026-11-17T06:35:00Z\",\n    \"updated_at\": \"2026-11-17T07:15:00Z\"\n  }\n}",
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "400 - Input tidak valid / description dan is_active tidak dikirim",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": "",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/products/9a8b7c6d-5e4f-4a3b-8c2d-1e0f9a8b7c6d",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "products",
+                    "9a8b7c6d-5e4f-4a3b-8c2d-1e0f9a8b7c6d"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sku\": \"KB-001\",\n  \"name\": \"Keyboard Mekanikal v2\",\n  \"price\": 475000,\n  \"stock\": 30,\n  \"category_id\": \"3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Input tidak valid\",\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"details\": [\n      {\n        \"field\": \"description\",\n        \"message\": \"wajib dikirim\"\n      },\n      {\n        \"field\": \"is_active\",\n        \"message\": \"wajib dikirim\"\n      }\n    ]\n  }\n}",
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "404 - Produk tidak ditemukan",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": "",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/products/9a8b7c6d-5e4f-4a3b-8c2d-1e0f9a8b7c6d",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "products",
+                    "9a8b7c6d-5e4f-4a3b-8c2d-1e0f9a8b7c6d"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sku\": \"KB-001\",\n  \"name\": \"Keyboard Mekanikal v2\",\n  \"description\": \"Keyboard 87 tombol, switch blue\",\n  \"price\": 475000,\n  \"stock\": 30,\n  \"category_id\": \"3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c\",\n  \"is_active\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Produk tidak ditemukan\",\n  \"error\": {\n    \"code\": \"NOT_FOUND\"\n  }\n}",
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "409 - SKU sudah dipakai produk lain",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": "",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/products/9a8b7c6d-5e4f-4a3b-8c2d-1e0f9a8b7c6d",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "products",
+                    "9a8b7c6d-5e4f-4a3b-8c2d-1e0f9a8b7c6d"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sku\": \"KB-001\",\n  \"name\": \"Keyboard Mekanikal v2\",\n  \"description\": \"Keyboard 87 tombol, switch blue\",\n  \"price\": 475000,\n  \"stock\": 30,\n  \"category_id\": \"3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c\",\n  \"is_active\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"SKU sudah dipakai\",\n  \"error\": {\n    \"code\": \"CONFLICT\"\n  }\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "name": "Hapus Produk",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "description": "Soft delete: deleted_at diisi, baris tetap ada di tabel.",
+            "url": {
+              "raw": "{{base_url}}/api/v1/products/{{product_id}}",
+              "protocol": "",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "products",
+                "{{product_id}}"
+              ],
+              "query": [],
+              "variable": []
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  "pm.test(\"Status 200\", function () { pm.expect(pm.response.code).to.equal(200); });",
+                  "const json = pm.response.json();",
+                  "pm.test(\"Envelope success = true\", function () { pm.expect(json.success).to.eql(true); });"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "200 - Produk berhasil dihapus",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/products/9a8b7c6d-5e4f-4a3b-8c2d-1e0f9a8b7c6d",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "products",
+                    "9a8b7c6d-5e4f-4a3b-8c2d-1e0f9a8b7c6d"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Produk berhasil dihapus\",\n  \"data\": {\n    \"id\": \"9a8b7c6d-5e4f-4a3b-8c2d-1e0f9a8b7c6d\"\n  }\n}",
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "404 - Produk tidak ditemukan",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/products/9a8b7c6d-5e4f-4a3b-8c2d-1e0f9a8b7c6d",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "products",
+                    "9a8b7c6d-5e4f-4a3b-8c2d-1e0f9a8b7c6d"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Produk tidak ditemukan\",\n  \"error\": {\n    \"code\": \"NOT_FOUND\"\n  }\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "name": "Buat Banyak Produk (Bulk)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "description": "",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "description": "1-50 produk dalam satu transaksi. Jika satu item gagal, tidak ada produk yang tersimpan. Jalankan setelah 'Buat Produk' (memakai {{product_category_id}} dan {{run_id}}).",
+            "url": {
+              "raw": "{{base_url}}/api/v1/products/bulk",
+              "protocol": "",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "products",
+                "bulk"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"products\": [\n    { \"sku\": \"BK-{{run_id}}-1\", \"name\": \"emina facial wash\", \"price\": 150000, \"stock\": 40, \"category_id\": \"{{product_category_id}}\" },\n    { \"sku\": \"BK-{{run_id}}-2\", \"name\": \"kahf facial wash\", \"price\": 350000, \"stock\": 15, \"category_id\": \"{{product_category_id}}\" }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  "pm.test(\"Status 201\", function () { pm.expect(pm.response.code).to.equal(201); });",
+                  "const json = pm.response.json();",
+                  "pm.test(\"Envelope success = true\", function () { pm.expect(json.success).to.eql(true); });",
+                  "pm.test(\"2 produk dibuat\", function () { pm.expect(json.data).to.have.lengthOf(2); });"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "201 - 2 produk berhasil dibuat",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": "",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/products/bulk",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "products",
+                    "bulk"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"products\": [\n    { \"sku\": \"MS-001\", \"name\": \"Mouse Wireless\", \"price\": 150000, \"stock\": 40, \"category_id\": \"3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c\" },\n    { \"sku\": \"MS-002\", \"name\": \"Mouse Gaming\", \"price\": 350000, \"stock\": 15, \"category_id\": \"3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c\" }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"2 produk berhasil dibuat\",\n  \"data\": [\n    {\n      \"id\": \"7c1d2e3f-4a5b-4c6d-8e7f-9a0b1c2d3e4f\",\n      \"sku\": \"MS-001\",\n      \"name\": \"Mouse Wireless\",\n      \"description\": null,\n      \"price\": 150000.00,\n      \"stock\": 40,\n      \"is_active\": true,\n      \"category\": {\n        \"id\": \"3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c\",\n        \"name\": \"Elektronik\"\n      },\n      \"created_at\": \"2026-11-17T06:35:00Z\",\n      \"updated_at\": \"2026-11-17T06:35:00Z\"\n    },\n    {\n      \"id\": \"8d2e3f4a-5b6c-4d7e-9f80-0b1c2d3e4f5a\",\n      \"sku\": \"MS-002\",\n      \"name\": \"Mouse Gaming\",\n      \"description\": null,\n      \"price\": 350000.00,\n      \"stock\": 15,\n      \"is_active\": true,\n      \"category\": {\n        \"id\": \"3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c\",\n        \"name\": \"Elektronik\"\n      },\n      \"created_at\": \"2026-11-17T06:35:00Z\",\n      \"updated_at\": \"2026-11-17T06:35:00Z\"\n    }\n  ]\n}",
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "400 - Bulk insert dibatalkan (item index 1 tidak valid)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": "",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/products/bulk",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "products",
+                    "bulk"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"products\": [\n    { \"sku\": \"MS-001\", \"name\": \"Mouse Wireless\", \"price\": 150000, \"stock\": 40, \"category_id\": \"3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c\" },\n    { \"sku\": \"MS-002\", \"name\": \"Mouse Gaming\", \"price\": 0, \"stock\": 15, \"category_id\": \"3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c\" }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Bulk insert dibatalkan, tidak ada produk yang disimpan\",\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"details\": [\n      {\n        \"index\": 1,\n        \"field\": \"price\",\n        \"message\": \"harus lebih dari 0\"\n      }\n    ]\n  }\n}",
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "409 - Bulk insert dibatalkan (SKU duplikat)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "description": "",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/products/bulk",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "products",
+                    "bulk"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"products\": [\n    { \"sku\": \"MS-001\", \"name\": \"Mouse Wireless\", \"price\": 150000, \"stock\": 40, \"category_id\": \"3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c\" },\n    { \"sku\": \"MS-001\", \"name\": \"Mouse Gaming\", \"price\": 350000, \"stock\": 15, \"category_id\": \"3f6c1b2e-8a4d-4c7e-9b1a-2d5e6f7a8b9c\" }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "name": "Content-Type",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Bulk insert dibatalkan, tidak ada produk yang disimpan\",\n  \"error\": {\n    \"code\": \"CONFLICT\",\n    \"details\": [\n      {\n        \"index\": 1,\n        \"field\": \"sku\",\n        \"message\": \"duplikat dengan item index 0\"\n      }\n    ]\n  }\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "name": "Ubah Sebagian Produk",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "description": "",
+            "url": {
+              "raw": "{{base_url}}/api/v1/products/{{product_id}}",
+              "protocol": "",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "products",
+                "{{product_id}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"sabun cuci muka untuk kulit yang sensitif\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "name",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/products/{{product_id}}",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "products",
+                    "{{product_id}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"cosrx facial wash\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Produk berhasil diperbarui\",\n  \"data\": {\n    \"id\": \"994e4009-db36-4a80-b635-9bd479c39faa\",\n    \"sku\": \"KB-455577\",\n    \"name\": \"cosrx facial wash\",\n    \"description\": \"\",\n    \"price\": 80000.00,\n    \"stock\": 30,\n    \"is_active\": true,\n    \"category\": {\n      \"id\": \"bff06e17-84a5-4b0d-a565-194f6d950bb0\",\n      \"name\": \"Kategori Uji 1795056442729\"\n    },\n    \"created_at\": \"2026-11-19T02:47:22Z\",\n    \"updated_at\": \"2026-11-19T03:45:22Z\"\n  }\n}"
+            },
+            {
+              "name": "Price & stock",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/products/{{product_id}}",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "products",
+                    "{{product_id}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"price\": \"70000\",\n  \"stock\": \"30\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Produk berhasil diperbarui\",\n  \"data\": {\n    \"id\": \"994e4009-db36-4a80-b635-9bd479c39faa\",\n    \"sku\": \"KB-455577\",\n    \"name\": \"cosrx facial wash\",\n    \"description\": \"\",\n    \"price\": 70000.00,\n    \"stock\": 30,\n    \"is_active\": true,\n    \"category\": {\n      \"id\": \"bff06e17-84a5-4b0d-a565-194f6d950bb0\",\n      \"name\": \"Kategori Uji 1795056442729\"\n    },\n    \"created_at\": \"2026-11-19T02:47:22Z\",\n    \"updated_at\": \"2026-11-19T03:47:07Z\"\n  }\n}"
+            },
+            {
+              "name": "multiple field",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/products/{{product_id}}",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "products",
+                    "{{product_id}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sku\": \"KB-002\",\n  \"name\": \"cosrx facial wash\",\n  \"description\": \"sabun cuci muka untuk kulit sensitif\",\n  \"price\": \"500000\",\n  \"stock\": \"15\",\n  \"is_active\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Produk berhasil diperbarui\",\n  \"data\": {\n    \"id\": \"994e4009-db36-4a80-b635-9bd479c39faa\",\n    \"sku\": \"KB-002\",\n    \"name\": \"cosrx facial wash\",\n    \"description\": \"sabun cuci muka untuk kulit sensitif\",\n    \"price\": 500000.00,\n    \"stock\": 15,\n    \"is_active\": true,\n    \"category\": {\n      \"id\": \"bff06e17-84a5-4b0d-a565-194f6d950bb0\",\n      \"name\": \"Kategori Uji 1795056442729\"\n    },\n    \"created_at\": \"2026-11-19T02:47:22Z\",\n    \"updated_at\": \"2026-11-19T03:50:24Z\"\n  }\n}"
+            },
+            {
+              "name": "description",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/products/{{product_id}}",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "products",
+                    "{{product_id}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"sabun cuci muka untuk kulit yang sensitif\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Produk berhasil diperbarui\",\n  \"data\": {\n    \"id\": \"994e4009-db36-4a80-b635-9bd479c39faa\",\n    \"sku\": \"KB-002\",\n    \"name\": \"cosrx facial wash\",\n    \"description\": \"sabun cuci muka untuk kulit yang sensitif\",\n    \"price\": 500000.00,\n    \"stock\": 15,\n    \"is_active\": true,\n    \"category\": {\n      \"id\": \"bff06e17-84a5-4b0d-a565-194f6d950bb0\",\n      \"name\": \"Kategori Uji 1795056442729\"\n    },\n    \"created_at\": \"2026-11-19T02:47:22Z\",\n    \"updated_at\": \"2026-11-19T03:51:53Z\"\n  }\n}"
+            },
+            {
+              "name": "name eror",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/products/{{product_id}}",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "products",
+                    "{{product_id}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\" : \"AB\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Validasi gagal\",\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"details\": [\n      {\n        \"field\": \"name\",\n        \"message\": \"harus 3-150 karakter\"\n      }\n    ]\n  }\n}"
+            },
+            {
+              "name": "negative stock",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/products/{{product_id}}",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "products",
+                    "{{product_id}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"stock\": \"-30\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Validasi gagal\",\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"details\": [\n      {\n        \"field\": \"stock\",\n        \"message\": \"minimal 0\"\n      }\n    ]\n  }\n}"
+            },
+            {
+              "name": "invalid price",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/products/{{product_id}}",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "products",
+                    "{{product_id}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"price\": \"abc\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Validasi gagal\",\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"details\": [\n      {\n        \"field\": \"price\",\n        \"message\": \"harus berupa angka\"\n      }\n    ]\n  }\n}"
+            },
+            {
+              "name": "Null on Required Field",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/products/{{product_id}}",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "products",
+                    "{{product_id}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\" : null\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Validasi gagal\",\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"details\": [\n      {\n        \"field\": \"name\",\n        \"message\": \"tidak boleh null atau format tidak valid\"\n      }\n    ]\n  }\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "type": "default"
+    },
+    {
+      "key": "category_id",
+      "value": "d0af7617-05ec-4f12-aa09-934b6afef310",
+      "type": "default"
+    },
+    {
+      "key": "product_category_id",
+      "value": "bff06e17-84a5-4b0d-a565-194f6d950bb0",
+      "type": "default"
+    },
+    {
+      "key": "product_id",
+      "value": "9d78b7a4-d924-4dc7-b72f-581ded8a982a",
+      "type": "default"
+    },
+    {
+      "key": "run_id",
+      "value": "455577",
+      "type": "default"
+    }
+  ]
+}
